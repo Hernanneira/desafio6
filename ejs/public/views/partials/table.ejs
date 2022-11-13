@@ -1,0 +1,23 @@
+<h1>Productos</h1>
+<div class="entry">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imagen</th>
+                </tr>
+            </thead>
+            <tbody id="trTable">
+                <% listProd.forEach(prod => { %>
+                    <tr>
+                        <td> <%= prod.id %> </td>
+                        <td> <%= prod.title %> </td>
+                        <td> <%= prod.price %> </td>
+                        <td> <img src="<%= prod.url %>" alt="<%= prod.title %>" width="25"> </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+</div>
