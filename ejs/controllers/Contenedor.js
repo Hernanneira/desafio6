@@ -1,5 +1,4 @@
 const {promises: fs} = require ('fs')
-const { send } = require('process')
 
 class Contenedor {
     constructor(route) {

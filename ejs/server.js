@@ -2,9 +2,11 @@ const express = require('express')
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 
+
 const Contenedor = require('./controllers/Contenedor')
 const ProductoController = new Contenedor('productos.json')
-
+const Chats = require('./controllers/Chats')
+const historial = new Chats('chats.json')
 const app = express()
 
 const httpServer = new HttpServer(app)
@@ -29,33 +31,15 @@ io.on('connection', async (socket) => {
         io.sockets.emit("productos", ProductoController.getAll)
     })
 
-    // const messages = [
-    //     { author: "Juan", text: "¡Hola! ¿Que tal?" },
-    //     { author: "Pedro", text: "¡Muy bien! ¿Y vos?" },
-    //     { author: "Ana", text: "¡Genial!" }
-    //  ];
+//mensajes
 
-    //  socket.emit('messages', messages);
+    const messages = await historial.getAllChats()
+    socket.emit('messages', messages);
 
-    // //mensajes
-    // socket.emit("messages", messages)
-
-    // socket.on("messegesNew", (nuevoMensaje) => {
-
-    //     messages.push(nuevoMensaje)
-    //     io.sockets.emit("messages", messages)
-    // })
-
-//     //historial mensajes
-//     const message = await historial.loadMessage()
-//     socket.emit('messages', message )
-    
-//     socket.on('messegesNew', async data => {
-
-//         await historial.saveMessage(data)
-//         const message2 = await historial.loadMessage()
-//         io.sockets.emit('messages', message2 );
-//    });
+    socket.on('messegesNew', async (data) => {
+    const historialSave = await historial.saveChats(data)
+        io.sockets.emit('messages', historialSave);
+    });
 });
 
 //CRUD

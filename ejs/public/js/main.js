@@ -25,6 +25,31 @@ document.getElementById('btn').addEventListener('click', () => {
 socket.emit("guardarNuevoProducto",nuevoProducto)
 })
 
-socket.on('messages', data => {
-    console.log(data);
-});
+socket.on('messages', function(data) { render(data); });
+
+function render(data) {
+    const html = data.map((elem, index) => {
+        return(`<div>
+            <strong style="color:blue">${elem.email}</strong>:
+            <p>${elem.date}<p>
+            <i style="color:green">${elem.textoMensaje}</i> </div>`)
+    }).join(" ");
+    document.getElementById('messages').innerHTML = html;
+}
+
+document.getElementById('formChat').addEventListener('submit', (e) => {
+    e.preventDefault()
+    agregarMensaje()
+})
+
+function agregarMensaje() {
+    const nuevoMensaje = {
+        email: document.getElementById('email').value,
+        textoMensaje: document.getElementById('textoMensaje').value
+    }
+    socket.emit("messegesNew",nuevoMensaje)
+}
+
+
+
+
